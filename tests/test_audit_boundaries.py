@@ -135,4 +135,17 @@ class UploadBoundaries(unittest.TestCase):
         reference=self.upload('valid.png',buffer.getvalue())
         self.assertEqual(reference['kind'],'image');self.assertTrue(reference['attachable'])
 
+    def test_missing_image_library_is_explicit_and_cleans_upload(self):
+        import builtins
+        original_import = builtins.__import__
+        def without_pillow(name, *args, **kwargs):
+            if name == 'PIL' or name.startswith('PIL.'):
+                raise ImportError('synthetic missing optional image validator')
+            return original_import(name, *args, **kwargs)
+        with patch('builtins.__import__', side_effect=without_pillow):
+            with self.assertRaisesRegex(ValueError, 'Pillow'):
+                self.upload('fixture.png', b'synthetic image bytes')
+        uploads = self.service.data/'uploads'
+        self.assertFalse(uploads.exists() and list(uploads.iterdir()))
+
 if __name__=='__main__':unittest.main()
