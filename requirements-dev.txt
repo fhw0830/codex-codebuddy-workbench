@@ -1,0 +1,2 @@
+# Full offline regression coverage includes optional attachment formats.
+-r requirements-optional.txt

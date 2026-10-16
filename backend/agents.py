@@ -173,7 +173,7 @@ class Codex:
     def models(self):
         process,events,errors = self.launch()
         try:
-            self.exchange(process,events,'initialize',{'clientInfo':{'name':'codex_codebuddy_workbench','title':'CodeDuo · Codex × CodeBuddy','version':'0.1.0'}},1)
+            self.exchange(process,events,'initialize',{'clientInfo':{'name':'codex_codebuddy_workbench','title':'CodeDuo · Codex × CodeBuddy','version':'0.1.1'}},1)
             process.stdin.write('{"method":"initialized","params":{}}\n'); process.stdin.flush()
             result,_ = self.exchange(process,events,'model/list',{},2)
             return [{'id':m['id'],'name':m.get('displayName',m['id']),'default':m.get('isDefault',False),
@@ -186,7 +186,7 @@ class Codex:
     def quota(self):
         process,events,errors = self.launch()
         try:
-            self.exchange(process,events,'initialize',{'clientInfo':{'name':'codex_codebuddy_workbench','title':'CodeDuo · Codex × CodeBuddy','version':'0.1.0'}},1)
+            self.exchange(process,events,'initialize',{'clientInfo':{'name':'codex_codebuddy_workbench','title':'CodeDuo · Codex × CodeBuddy','version':'0.1.1'}},1)
             process.stdin.write('{"method":"initialized","params":{}}\n'); process.stdin.flush()
             result,_ = self.exchange(process,events,'account/rateLimits/read',{},2)
             # Avoid exposing account IDs, login tokens or email in the web UI.
@@ -207,7 +207,7 @@ class Codex:
         pending_resources={}
         resource_hook_events=[]
         try:
-            self.exchange(process,events,'initialize',{'clientInfo':{'name':'codex_codebuddy_workbench','title':'CodeDuo · Codex × CodeBuddy','version':'0.1.0'},
+            self.exchange(process,events,'initialize',{'clientInfo':{'name':'codex_codebuddy_workbench','title':'CodeDuo · Codex × CodeBuddy','version':'0.1.1'},
                 'capabilities':{'experimentalApi':True}},1,cancel)
             process.stdin.write('{"method":"initialized","params":{}}\n'); process.stdin.flush()
             hook_config={}

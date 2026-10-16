@@ -5,7 +5,7 @@
 - Windows 10/11 为首发主要环境；Python 3.12+、Node.js。其他平台使用直接 Python 入口，完整兼容性未验收。
 - Codex CLI：按[官方安装说明](https://learn.chatgpt.com/docs/codex/cli)安装并 `codex login`。
 - CodeBuddy Code：按[官方快速入门](https://www.codebuddy.cn/docs/cli/quickstart)完成自己的登录。项目适配的固定版本为 `2.164.0`，准备命令是 `python scripts/prepare_runtime.py`。
-- 后端无必需 pip 依赖；可选 PDF、DOCX、XLSX 文字提取依赖：`python -m pip install -r requirements-optional.txt`。未安装时会提示缺少解析器。
+- 核心文本服务无必需 pip 依赖；图片附件验证及可选 PDF、DOCX、XLSX 提取依赖：`python -m pip install -r requirements-optional.txt`。完整回归测试先安装 `requirements-dev.txt`。
 
 Node.js 需满足所用 CLI 的要求。不要在仓库中复制 CLI 登录文件、API Key 或运行时缓存。默认测试与离线预览均不需要登录。
 

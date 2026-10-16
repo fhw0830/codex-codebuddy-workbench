@@ -822,6 +822,9 @@ class Service:
             if path.suffix in local_files.IMAGES:
                 try:
                     from PIL import Image
+                except ImportError as exc:
+                    raise ValueError('图片附件需要 Pillow；请先运行 python -m pip install -r requirements-optional.txt') from exc
+                try:
                     with Image.open(path) as image:
                         if image.width*image.height>32000000:raise ValueError('图片像素过大，请提供较小图片')
                         image.verify()

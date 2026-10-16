@@ -12,7 +12,7 @@ def register():
     process=None
     try:
         process,events,errors=client.launch(True,runtime)
-        client.exchange(process,events,'initialize',{'clientInfo':{'name':'codeduo_hook_registration','version':'0.1.0'}},1)
+        client.exchange(process,events,'initialize',{'clientInfo':{'name':'codeduo_hook_registration','version':'0.1.1'}},1)
         process.stdin.write('{"method":"initialized","params":{}}\n');process.stdin.flush()
         response,_=client.exchange(process,events,'hooks/list',{},2)
         command=runtime.codex_settings['hooks']['PreToolUse'][0]['hooks'][0]['command']

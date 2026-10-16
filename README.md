@@ -6,6 +6,8 @@
 
 [English](README.en.md) · [安装与配置](docs/SETUP.md) · [隐私与安全](docs/PRIVACY.md) · [参与贡献](CONTRIBUTING.md)
 
+[![Offline checks](https://github.com/fhw0830/codex-codebuddy-workbench/actions/workflows/ci.yml/badge.svg)](https://github.com/fhw0830/codex-codebuddy-workbench/actions/workflows/ci.yml)
+
 CodeDuo 是运行在你自己电脑上的网页工作台。它连接本机的 Codex CLI 和 CodeBuddy Code CLI，把任务说明、执行过程、定向交接、人工问答和代码差异放在一个界面中。适合需要“一个推进、另一个复核”的个人开发流程。
 
 这是独立社区项目，与 OpenAI、腾讯不存在官方隶属或背书关系。工具账号、模型服务和费用由各自提供方管理；本项目的 MIT 许可证不包含模型服务或第三方 CLI 的授权。
@@ -87,9 +89,10 @@ python server.py --offline --open
 
 ## 开发与检查
 
-后端使用 Python 标准库；前端为原生 HTML / CSS / JavaScript，已随仓库附带必要浏览器资源。不需要 `npm install` 就能运行网页。
+核心文本对话后端使用 Python 标准库；图片验证和部分文档提取使用可选依赖。前端为原生 HTML / CSS / JavaScript，已随仓库附带必要浏览器资源。不需要 `npm install` 就能运行网页。完整测试须先安装测试依赖：
 
 ```powershell
+python -m pip install -r requirements-dev.txt
 python -m unittest discover -s tests -p "test_*.py"
 python scripts/run_js_tests.py
 python scripts/privacy_check.py

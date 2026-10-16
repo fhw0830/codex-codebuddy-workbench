@@ -4,7 +4,7 @@
 
 1. Fork 仓库，在独立分支上修改。
 2. 使用合成数据或临时目录复现问题；不要上传自己的 `data/`、账号配置、上传附件或真实对话。
-3. 修改后运行 Python 测试、JavaScript 测试与隐私扫描，命令见 README。
+3. 用 `python -m pip install -r requirements-dev.txt` 安装完整测试依赖，再运行 Python 测试、JavaScript 测试与隐私扫描，命令见 README。
 4. Pull Request 说明触发条件、修改后行为、验证范围及仍未覆盖的情况。
 
 默认测试不能依赖真实模型、扣费请求、SSH 或外部设备。需要人工推理验证时应单独说明，并使用自己的账号明确执行。

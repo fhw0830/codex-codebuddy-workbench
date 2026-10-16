@@ -34,7 +34,7 @@ class ResourceBoundaries(unittest.TestCase):
 
     def test_deferred_write_claims_actual_target(self):
         with tempfile.TemporaryDirectory() as temporary:
-            folder=Path(temporary)
+            folder=Path(temporary).resolve()
             result=operation_resources('DeferExecuteTool',{'tool_name':'Write','arguments':{'file_path':str(folder/'file.txt')}},ROOT)
             self.assertTrue(any(str(folder).lower() in r.lower() for r in result))
 

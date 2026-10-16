@@ -55,11 +55,12 @@ Full access can run local tools and commands. Do not expose this personal loopba
 ## Verify
 
 ```sh
+python -m pip install -r requirements-dev.txt
 python -m unittest discover -s tests -p "test_*.py"
 python scripts/run_js_tests.py
 python scripts/privacy_check.py
 ```
 
-These checks use temporary data and synthetic adapters. They do not establish live inference compatibility for every model/account. No frontend build or npm install is required for the vendored browser assets.
+Full regression tests install optional attachment-format dependencies through `requirements-dev.txt`. The core text service needs only the standard library; image validation and some document readers are optional. These checks use temporary data and synthetic adapters. They do not establish live inference compatibility for every model/account. No frontend build or npm install is required for the vendored browser assets.
 
 Original source: [MIT](LICENSE). See [third-party notices](THIRD_PARTY_NOTICES.md) for bundled assets. Model access and external CLI licenses remain separate.

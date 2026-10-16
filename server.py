@@ -65,12 +65,12 @@ class Handler(BaseHTTPRequestHandler):
         arg=lambda key,default='':query.get(key,[default])[0]
         try:
             if path=='/api/bootstrap':
-                return self.send({'app':'codeduo-workbench','version':'0.1.0','csrf':self.server.csrf,
+                return self.send({'app':'codeduo-workbench','version':'0.1.1','csrf':self.server.csrf,
                     'capabilities':{'streaming_codebuddy':True,'queue':True,'steer':True,'task_plan':True,'directed_handoff':True,'user_questions':True,'phased_execution':True,'independent_conversations':True,'resource_coordination':True,'queue_actions':True,'auto_compaction':True,'resource_release_safe':True,'workbench_inspection':True},
                     'conversations':self.service.store.conversations(),'settings':self.service.store.settings(),
                     'health':self.service.health,'last_event':self.service.store.one('SELECT COALESCE(MAX(seq),0) AS seq FROM events')['seq']})
             if path=='/api/health':
-                return self.send({'app':'codeduo-workbench','version':'0.1.0','health':self.service.health})
+                return self.send({'app':'codeduo-workbench','version':'0.1.1','health':self.service.health})
             if path=='/api/runtime':
                 return self.send(self.service.runtime(arg('conversation_id')))
             if path=='/api/conversations':

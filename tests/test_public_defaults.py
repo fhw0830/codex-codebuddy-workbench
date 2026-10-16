@@ -14,7 +14,7 @@ from backend.runtime_paths import runtime_cache
 class PublicDefaults(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
-        self.data = Path(self.temp.name)/'private-data'
+        self.data = (Path(self.temp.name)/'private-data').resolve()
         self.service = Service(ROOT, data=self.data, connect=False)
         self.conversation = self.service.store.conversations()[0]['id']
 
