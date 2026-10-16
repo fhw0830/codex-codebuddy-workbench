@@ -1,0 +1,127 @@
+/* Conversation-first layout. Task routes scroll with their own reply. */
+body{font-size:16px}
+.app-shell{grid-template-columns:220px minmax(0,1fr) 292px}
+.app-shell.panel-hidden{grid-template-columns:220px minmax(0,1fr)}
+.topbar{height:48px;padding:0 28px}
+.breadcrumb,.connection-pill{font-size:12px}
+.conversation-header{padding:14px 30px 12px;gap:18px}
+.conversation-header .eyebrow{display:none}
+.title-button h1{font-size:23px;line-height:1.4;letter-spacing:0}
+.conversation-header p{font-size:12px;margin-top:5px}
+.message-scroll{padding:16px 32px 28px;scroll-behavior:auto;overflow-anchor:none;scrollbar-gutter:stable}
+#messages{max-width:940px;margin:0 auto}
+.message{margin-bottom:36px;animation:none}
+.message-heading{font-size:13px;gap:9px;min-height:34px;margin-bottom:12px}
+.message-heading strong{font-size:15px}
+.message-heading .model-tag,.message-heading time{font-size:12px}
+.message-body,.message.assistant .message-body,.message.user .message-body{font-size:17px;line-height:1.85;max-width:900px}
+.message.assistant .message-body{padding-left:43px}
+.message-body h1{font-size:26px}.message-body h2{font-size:23px}.message-body h3{font-size:20px}
+.message-body pre{font-size:14px;line-height:1.75;border-radius:10px}
+.message-body code{font-size:.9em}.message-body th,.message-body td{padding:10px 14px}
+.message-footer{margin-left:43px;gap:12px;font-size:13px;flex-wrap:wrap;line-height:1.6}
+.question-timing,.delivery-badge{font-size:13px}
+.composer-area{max-width:980px;padding:8px 28px 10px;background:var(--canvas)}
+.composer textarea{height:60px;min-height:52px;max-height:180px;font-size:16px;line-height:1.6;padding:12px 16px 6px}
+.composer-footer{padding:6px 12px 10px}.composer-note{font-size:11px;padding-top:6px}
+.route-picker button{font-size:13px;padding:7px 10px}.send-controls select,#followup-mode{font-size:12px}
+.active-progress{font-size:12px;line-height:1.5;margin-bottom:7px}
+.active-progress strong{font-size:11px}
+.tool-trace{font-size:14px;margin-left:43px;border-radius:10px}
+.tool-trace>summary{padding:12px 14px;line-height:1.5}
+.tool-row{padding:12px 14px;overflow-anchor:none;scroll-margin-top:12px}
+.tool-row>strong,.tool-row>span{font-size:13px}.tool-row>code{font-size:13px;line-height:1.6}
+.tool-row>pre{font-size:13px;line-height:1.7;max-height:360px;overflow:auto;scroll-behavior:auto}
+.message-plan{margin:0 0 16px 43px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.message-plan>summary{padding:11px 14px;font-size:13px;gap:14px}
+.message-plan>summary small{font-size:12px}.message-plan>.task-flow{padding:14px;border:0;border-top:1px solid var(--line)}
+.message-plan .flow-heading{font-size:13px}.message-plan .flow-heading>span{font-size:12px}
+.message-plan .metro-track{padding:18px 0 6px}.message-plan .metro-station{font-size:14px;flex-basis:160px;max-width:240px}
+.message-plan .metro-node{width:28px;height:28px;font-size:12px;box-shadow:none}
+.message-plan .metro-label{min-height:40px}.message-plan .metro-station small{font-size:12px;line-height:1.5;margin-top:8px}
+.message-plan .flow-action{font-size:12px}.message-plan .flow-note{font-size:11px}
+.task-flow.compact{margin:0 0 14px 43px;border:0;border-left:2px solid var(--line);border-radius:0;padding:3px 12px;background:none}
+.task-flow.compact .flow-heading{font-size:13px}.task-flow.compact .flow-heading>span{font-size:12px}
+.context-header,.section-label,.context-tabs button,.agent-name,.agent-name strong{font-size:14px}
+.context-panel select,.brief-card,.task-info strong,.agent-state,.model-note,.text-button{font-size:13px}
+.context-content,.agent-pair{padding-left:20px;padding-right:20px}
+.context-panel .brief-card{max-height:180px;overflow:auto;line-height:1.8}
+.nav-links button,.new-chat,.conversation-item strong{font-size:14px}
+.conversation-item small,.sidebar-search input,.quota-widget small,.user-row small{font-size:12px}
+.quota-widget,.user-row strong{font-size:13px}
+.status-dot.busy,.reply-placeholder span{animation:none}
+@media(max-width:1250px){
+ .app-shell,.app-shell.panel-hidden{grid-template-columns:208px minmax(0,1fr)}
+ .context-panel{position:fixed;right:0;top:0;bottom:0;width:min(340px,100vw - 24px);z-index:30;display:none;box-shadow:var(--shadow)}
+ .context-panel.open,.app-shell.panel-hidden .context-panel.open{display:flex}
+ .panel-close{display:flex;margin-left:auto}.local-badge{display:none}
+}
+@media(max-width:760px){
+ .app-shell,.app-shell.panel-hidden{grid-template-columns:minmax(0,1fr)}
+ .topbar{height:44px;padding:0 14px}.breadcrumb{font-size:12px}.connection-pill{font-size:11px}
+ .conversation-header{padding:12px 16px}.title-button h1{font-size:20px}.conversation-header p{font-size:11px}
+ .message-scroll{padding:12px 16px 22px}.message-body,.message.assistant .message-body,.message.user .message-body{font-size:16px;padding-left:0}
+ .message-heading{gap:7px}.message-heading .model-tag{font-size:11px}
+ .message-footer,.tool-trace,.message-plan,.task-flow.compact{margin-left:0}
+ .composer-area{padding:6px 12px 8px}.composer textarea{font-size:16px;height:56px}.composer-footer{padding:4px 8px 8px}
+ .route-picker button{font-size:12px;padding:6px 8px}.composer-note{font-size:10px}
+ .send-controls{gap:5px}.message-plan .metro-station{flex-basis:150px}
+ .message-body h2{font-size:21px}.message-body h3{font-size:19px}
+}
+.short-viewport .conversation-header{padding:7px 16px}.short-viewport .title-button h1{font-size:19px}
+.short-viewport .conversation-header p{font-size:11px}.short-viewport .topbar{height:36px}
+.short-viewport .composer textarea{height:42px;font-size:15px;line-height:1.5;min-height:38px;padding:7px 12px 3px}
+.short-viewport .composer-note{font-size:10px}.short-viewport .composer-area{padding-top:4px}
+
+.active-progress{display:flex;gap:12px;align-items:center;min-width:0}.active-progress>span{min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.active-progress .text-button{flex-shrink:0;font-size:12px}.conversation-row strong{font-size:14px}.conversation-row small{font-size:12px}#edit-workdir,#workdir-label{font-size:12px}.brief-card{overflow-wrap:anywhere}
+
+.message-body table{display:block;max-width:100%;overflow-x:auto;font-size:15px}.message-body p code,.message-body li code,.message-body td code{overflow-wrap:anywhere}
+
+.generation-spinner{display:inline-block;width:17px;height:17px;flex:0 0 17px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:generation-spin .9s linear infinite;color:var(--accent)}
+.sidebar .generation-spinner{color:#dcbfae;width:16px;height:16px;flex-basis:16px}
+@keyframes generation-spin{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.generation-spinner{animation:none}}
+.composer textarea{resize:vertical;overflow:auto}.composer-footer{flex-wrap:wrap;gap:7px}.send-controls{flex-wrap:wrap}#execution-strategy{max-width:180px;font-size:12px;border:1px solid var(--line);background:var(--surface-soft);color:var(--ink);padding:7px;border-radius:7px}
+.question-card{margin:16px 0 16px 43px;padding:18px;border:1px solid var(--line);border-radius:12px;background:var(--surface);font-size:15px;line-height:1.7}
+.question-heading{display:flex;justify-content:space-between;gap:12px;margin-bottom:12px}.question-heading small,.question-actions small{color:var(--muted);font-size:12px}
+.question-card fieldset{border:0;margin:0 0 14px;padding:0;min-width:0}.question-card legend{font-weight:550;margin-bottom:12px;width:100%}
+.question-option{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:7px 0;cursor:pointer}.question-option:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.question-option input{margin-top:6px;accent-color:var(--accent)}.question-option strong{font-weight:500}.question-option small{display:block;color:var(--muted);font-size:13px}
+.question-card textarea{width:100%;min-height:58px;max-height:200px;resize:vertical;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--surface-soft);color:var(--ink);font:inherit;margin-top:7px}
+.question-actions{display:flex;align-items:center;justify-content:space-between;gap:16px}.question-actions button{flex-shrink:0;border-color:var(--accent);color:var(--accent)}
+@media(max-width:760px){.question-card{margin-left:0;padding:14px}#execution-strategy{max-width:158px}.composer-tools{flex-wrap:wrap}.question-actions{align-items:flex-end}}
+
+.resource-wait{margin:12px 0 16px 43px;padding:12px 16px;border-left:3px solid var(--accent);background:var(--surface-soft);font-size:14px;line-height:1.6}.resource-wait strong,.resource-wait span{display:block}.resource-wait span{color:var(--muted);font-size:13px;margin-top:4px}@media(max-width:760px){.resource-wait{margin-left:0}}
+
+/* Composer: invisible edge affordance, no resize buttons. */
+.composer{position:relative}.composer textarea{resize:none;box-sizing:border-box}
+#composer-resize-handle{position:absolute;top:-6px;left:10px;right:10px;height:12px;z-index:2;cursor:ns-resize;touch-action:none}
+#composer-resize-handle::after{content:"";position:absolute;left:calc(50% - 24px);top:5px;width:48px;height:3px;border-radius:3px;background:var(--muted);opacity:0;transition:opacity .15s}
+#composer-resize-handle:hover::after,#composer-resize-handle:focus-visible::after,.composer-resizing #composer-resize-handle::after{opacity:.6}
+.composer-resizing{user-select:none;cursor:ns-resize}.queue-hint{font-size:12px;color:var(--muted);white-space:nowrap}
+.queue-actions{display:inline-flex;gap:6px;flex-wrap:wrap}.delivery-badge{flex-wrap:wrap;row-gap:5px}
+.compression-note{border:1px solid var(--line);border-radius:10px;padding:12px 16px;margin:12px 0 24px;color:var(--muted);font-size:14px}
+.compression-note summary{cursor:pointer}.compression-note .markdown{color:var(--ink);margin-top:16px;font-size:15px}
+.compression-archives{display:flex;flex-wrap:wrap;gap:12px}.compression-archives a{color:var(--teal);text-decoration:underline;font-size:13px}
+
+/* Stable input measurements, live clocks and inline feedback. */
+.composer textarea{scrollbar-gutter:stable}
+.active-progress{justify-content:flex-start;min-height:24px}
+.active-progress .active-progress-label{flex:1 1 auto;min-width:0;white-space:nowrap;text-overflow:ellipsis}
+.active-progress .active-progress-clock{flex:0 0 auto;overflow:visible;white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--ink)}
+.active-progress-clock .timer-number{display:inline-block;min-width:9em;text-align:right}
+[data-live-duration],.reply-elapsed{font-variant-numeric:tabular-nums;white-space:nowrap}
+.composer-note{min-height:26px;align-items:center;flex-wrap:nowrap}
+.composer-feedback{flex:1;min-width:0;display:flex;align-items:center;justify-content:flex-end;height:26px}
+.composer-feedback #save-note{display:flex;align-items:center;gap:4px;white-space:nowrap}
+.composer-feedback #toasts{position:static;inset:auto;transform:none;display:block;width:auto;max-width:100%;min-width:0;pointer-events:auto;z-index:auto}
+.composer-feedback .toast{display:flex;align-items:center;gap:6px;max-width:100%;height:26px;padding:0;background:transparent;color:var(--green);box-shadow:none;border-radius:0;font-size:12px;animation:none}
+.composer-feedback .toast.error{color:var(--accent)}
+.composer-feedback .toast>span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.toast-close{display:flex;align-items:center;flex:0 0 20px;width:20px;height:20px;padding:3px;color:inherit;opacity:.7;border-radius:4px}
+.toast-close:hover{background:var(--surface-soft);opacity:1}.toast-close .icon{width:12px;height:12px}
+@media(max-width:760px){.composer-note>span:first-child{font-size:10px;white-space:nowrap}.composer-feedback .toast{font-size:11px}.active-progress-clock .timer-number{min-width:6.5em}.active-progress{gap:7px}}
+.short-viewport #execution-strategy{width:116px;max-width:116px;padding:5px;font-size:11px}
+.short-viewport .queue-hint{display:none}.short-viewport .composer-footer{flex-wrap:nowrap;gap:6px}
+.short-viewport .composer-tools,.short-viewport .send-controls{flex-wrap:nowrap;gap:4px}
+.short-viewport .route-picker button{padding:5px 6px;font-size:11px}

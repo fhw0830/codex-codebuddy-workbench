@@ -1,0 +1,15 @@
+const assert=require('node:assert/strict'),wb=require('../web/workbench-ui.js'),ex=require('../web/execution-ui.js'),ui=require('../web/chat-ui.js');
+const a={id:'a',role:'assistant',agent:'codex',status:'completed',content:'已修改',meta:{job_id:'j',round:1,tool_events:[{id:'edit',status:'completed',changes:[{path:'a<script>.py',scope:'snippet',diff:'@@ -1 +1 @@\n-old\n+new'}]}]}};
+const b={id:'b',role:'assistant',agent:'codebuddy',status:'streaming',meta:{job_id:'j',round:1,collaboration:{source_message_id:'a',source_agent:'codex'},plan:[{step:'核对文件',status:'in_progress'}]}};
+const c={messages:[a,b]};
+assert.match(wb.handoff(c,a),/正在复核/);assert.match(wb.handoff(c,b),/查看上一方交接/);assert.doesNotMatch(wb.handoff(c,a),/验收通过/);
+assert.match(wb.context(c,a),/没有保存输入快照/);
+const changes=wb.changes(c,a,ex);assert.match(changes,/操作累计/);assert.match(changes,/data-wb-line="1"/);assert.match(changes,/a&lt;script&gt;.py/);assert.doesNotMatch(changes,/<script>/);
+assert.match(wb.runtime({message_id:'b',process_alive:true,active_tools:[],checked_at:'now'},b,ui),/仍在运行/);
+assert.match(wb.runtime({message_id:'other',process_alive:true},b,ui),/正在读取/);
+a.status='failed';assert.match(wb.extras(c,a,ex,ui,true),/从未完成处继续/);assert.doesNotMatch(wb.extras(c,a,ex,ui,false),/data-wb-resume/);
+assert.match(wb.extras(c,b,ex,ui,true),/本轮上下文/);assert.match(wb.extras(c,b,ex,ui,true),/本轮改动/);assert.match(wb.extras(c,b,ex,ui,true),/运行情况/);
+console.log('Workbench UI: relay provenance, actual changes and line feedback, context transparency, diagnosis and capability-gated continuation passed');
+const legacy={...a,meta:{tool_events:a.meta.tool_events}};
+assert.doesNotMatch(wb.changes({messages:[legacy,{...legacy,id:'other',meta:{tool_events:[{id:'different',changes:[{path:'unrelated.py'}]}]}}]},legacy,ex),/unrelated.py/);
+assert.match(wb.extras({messages:[a,{id:'resume-user',role:'user',meta:{resume_checkpoint:{source_message_id:a.id}}}]},a,ex,ui,true),/已续接 · 查看任务/);

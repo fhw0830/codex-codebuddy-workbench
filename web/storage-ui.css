@@ -1,0 +1,21 @@
+#storage-dialog{width:min(900px,calc(100vw - 28px));max-height:88dvh;padding:24px}
+#storage-dialog .dialog-header{margin-bottom:14px}
+#storage-status{min-height:1.6em;color:var(--muted);font-size:12px;margin:8px 0 14px;overflow-wrap:anywhere}
+.storage-tabs{display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:10px}
+.storage-tabs button{padding:7px 10px;border-radius:7px;font-size:13px;color:var(--muted)}
+.storage-tabs button[aria-selected=true]{background:var(--surface-soft);color:var(--ink)}
+.storage-panels>section>p,.storage-status-note{font-size:13px;line-height:1.8;color:var(--muted)}
+.storage-panels h3{font-size:15px;font-weight:500;margin:20px 0 10px}
+.storage-list{max-height:300px;overflow:auto;border:1px solid var(--line);border-radius:10px}
+.storage-row{display:flex;gap:11px;align-items:flex-start;padding:12px 14px;border-bottom:1px solid var(--line);font-size:13px;cursor:pointer;min-width:0}
+.storage-row:last-child{border-bottom:0}.storage-row>span{flex:1;min-width:0;overflow-wrap:anywhere}.storage-row strong{font-weight:500}.storage-row small{display:block;color:var(--muted);font-size:11px;margin-top:3px}.storage-row>b{font-weight:400;color:var(--muted);white-space:nowrap;font-size:12px}
+.storage-row input,.storage-select-all input{accent-color:var(--codex);flex:0 0 auto;margin-top:4px}
+.storage-select-all{display:flex;align-items:center;gap:8px;margin:14px 0 9px;font-size:12px;cursor:pointer}
+.storage-actions{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}.storage-danger{color:var(--accent);border-color:var(--accent)}
+.storage-empty{padding:20px 0;font-size:13px;color:var(--muted)}
+.storage-protection{margin-top:20px;padding-top:14px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);line-height:1.8}.storage-protection summary{cursor:pointer}.storage-protection p{margin:8px 0}
+.storage-database{display:flex;gap:14px;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:18px;margin-top:20px;font-size:12px;color:var(--muted);line-height:1.8}.storage-database button{flex-shrink:0}
+@media(max-width:760px){#storage-dialog{padding:18px 14px}.storage-tabs{gap:4px}.storage-tabs button{font-size:12px;padding:8px}.storage-row{padding:11px 10px}.storage-database{align-items:flex-start;flex-direction:column}.storage-list{max-height:260px}}
+
+#storage-confirm-text{white-space:pre-wrap;overflow-wrap:anywhere;max-height:45dvh;overflow:auto;font-size:13px;line-height:1.9}
+#storage-confirm-dialog h2{font-size:18px;font-weight:500}

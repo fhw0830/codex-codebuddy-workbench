@@ -1,0 +1,11 @@
+const assert=require('node:assert/strict');
+const {bytes,draftUploads,rows}=require('../web/storage-ui.js');
+const storage=values=>({length:Object.keys(values).length,key:i=>Object.keys(values)[i],getItem:key=>values[key]});
+assert.equal(bytes(0),'0 B');assert.equal(bytes(1536),'1.5 KB');assert.equal(bytes(1024**3),'1.0 GB');
+const a='a'.repeat(32),b='b'.repeat(32);
+assert.deepEqual(draftUploads(storage({'unrelated':'bad','robot-collab:draft:one':JSON.stringify({uploads:[{upload_id:a},{upload_id:'invalid'}]}),'robot-collab:draft:two':JSON.stringify({uploads:[{upload_id:a},{upload_id:b}]})})),[a,b]);
+assert.throws(()=>draftUploads(storage({'robot-collab:draft:one':'broken JSON'})),/草稿记录无法读取/);
+const html=rows([{id:'" onclick="bad',title:'<img src=x onerror=bad>',bytes:42,messages:3}],'conversations');
+assert.ok(!html.includes('<img'));assert.ok(html.includes('&lt;img'));assert.ok(html.includes('value="&quot; onclick=&quot;bad"'));assert.ok(!html.includes('checked'));assert.ok(html.includes('3 条消息'));
+assert.ok(rows([],'garbage').includes('暂无项目'));
+console.log('storage UI: draft references, escaping, sizes, empty state and opt-in selection passed');

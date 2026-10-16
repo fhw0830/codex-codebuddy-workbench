@@ -1,0 +1,4 @@
+# Only needed for these optional document extractors.
+pypdf>=5,<7
+python-docx>=1.1,<2
+openpyxl>=3.1,<4

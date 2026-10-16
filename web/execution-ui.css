@@ -1,0 +1,53 @@
+/* One public progress paragraph, its tools, then the next paragraph. */
+.execution-stream{display:flex;flex-direction:column;gap:16px}.execution-item{min-width:0}.execution-text>:first-child{margin-top:0}.execution-text>:last-child{margin-bottom:0}
+.conversation-list{overflow-x:hidden}.conversation-row>span:last-child{min-width:0;max-width:100%}
+.execution-tool{border:1px solid var(--line);border-radius:10px;background:var(--surface);margin:0;color:var(--ink);overflow:hidden;font-size:14px}
+.execution-tool>summary{display:flex;align-items:center;gap:10px;cursor:pointer;min-height:44px;padding:10px 14px;list-style:none;flex-wrap:wrap}
+.execution-tool>summary::before{content:'▸';color:var(--muted)}.execution-tool[open]>summary::before{content:'▾'}
+.tool-call-name{font-weight:600}.tool-call-state{margin-left:auto;color:var(--muted);font-size:12px;white-space:nowrap}.change-count{font-size:12px;color:var(--muted)}
+.execution-tool-detail{padding:0 14px 14px;border-top:1px solid var(--line)}.execution-tool pre{font-size:13px;line-height:1.65;margin:12px 0;max-height:260px;overflow:auto;white-space:pre}
+.code-change{border:1px solid var(--line);border-radius:8px;margin-top:14px;overflow:hidden}.diff-heading{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface-soft);font-size:13px}.diff-heading strong{flex:1;overflow-wrap:anywhere}
+.diff-added{color:#25804c;font-weight:600}.diff-removed{color:#b84c40;font-weight:600}.diff-note{font-size:12px!important;color:var(--muted);margin:8px 12px!important}
+.diff-scroll{max-height:420px;overflow:auto}.diff-table{display:table!important;border-collapse:collapse;width:100%;font-size:13px;line-height:1.7;margin:0!important;border:0!important}
+.diff-table td{border:0!important;padding:0 9px!important;vertical-align:top}.diff-table td:nth-child(-n+2){width:3em;min-width:3em;text-align:right;color:var(--muted);font-variant-numeric:tabular-nums;user-select:none;border-right:1px solid var(--line)!important}
+.diff-table td:last-child{min-width:240px}.diff-table code{display:block;font-family:Consolas,monospace;background:none!important;border:0!important;padding:0!important;font-size:13px;white-space:pre;color:inherit!important}
+.diff-add{background:color-mix(in srgb,#63b981 16%,transparent);color:var(--ink)}.diff-remove{background:color-mix(in srgb,#df8b7f 17%,transparent);color:var(--ink)}.diff-hunk{background:var(--surface-soft);color:var(--muted)}
+.execution-tool .write-preview{padding:12px;max-height:360px}.tool-path{font-size:12px;overflow-wrap:anywhere;color:var(--muted)}
+.legacy-tool-stream{display:grid;gap:10px;margin-top:18px}.legacy-order-note{font-size:12px;color:var(--muted)}
+.question-answer{margin:16px 0 0 18px;padding:14px 16px;border-left:3px solid var(--codex);background:var(--surface-soft);border-radius:0 9px 9px 0}
+.answer-heading{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:13px}.answer-heading small{margin-left:auto;color:var(--muted)}.answer-avatar{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--surface);color:var(--accent)}
+.question-answer p{white-space:pre-wrap;margin:5px 0!important;font-size:15px}.answer-part+ .answer-part{margin-top:12px}.answer-part small,.question-receipt{color:var(--muted);font-size:12px}.asked-questions p{font-size:15px}
+@media(max-width:760px){.execution-tool>summary{padding:10px;gap:7px}.tool-call-state{width:100%;margin-left:16px}.question-answer{margin-left:0;padding:12px}.diff-table code{font-size:12px}.execution-stream{gap:14px}}
+.diff-expand{border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);padding:4px 8px;font:inherit;cursor:pointer;white-space:nowrap}
+.code-change-dialog{width:min(1120px,94vw);max-width:94vw;max-height:88dvh;padding:22px;overflow:auto}.code-change-dialog .diff-scroll{max-height:65dvh}.code-change-dialog .write-preview{max-height:65dvh;overflow:auto;font:14px/1.7 Consolas,monospace}.code-change-dialog h2{font-size:18px;overflow-wrap:anywhere}
+.discussion-round{margin:36px 0 22px;padding:16px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);color:var(--ink)}
+.round-title{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}.round-title strong{font-size:19px;font-weight:650}.round-title strong span{font-size:14px;font-weight:400;color:var(--muted)}.round-title small{font-size:13px;color:var(--muted)}
+.round-actors{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:12px}.round-actor{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--muted)}.round-actor b{color:var(--ink);font-weight:550}.round-state-dot{width:7px;height:7px;flex:0 0 auto;border-radius:50%;background:var(--muted);opacity:.45}.round-actor.completed .round-state-dot{background:var(--codex);opacity:1}.round-actor.streaming .round-state-dot{background:var(--accent);opacity:1;box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 12%,transparent)}.round-actor.failed .round-state-dot{background:var(--accent);opacity:1}.round-actor.waiting .round-state-dot{background:#b88636;opacity:1}.round-arrow{color:var(--muted)}
+.message-heading{flex-wrap:wrap;row-gap:7px}.message-heading .message-round-badge{font-size:12px;color:var(--ink);background:var(--surface-soft);border:1px solid var(--line);border-radius:5px;padding:3px 7px}.message.assistant{margin-bottom:32px!important}.message.assistant .message-body{font-size:17px;line-height:1.9}.message-heading .model-tag{font-size:12px}.message-footer{gap:10px;flex-wrap:wrap}
+.model-failure-notice{border-left:3px solid var(--accent);padding:12px 16px;background:var(--surface);font-size:14px;margin-top:16px}.model-failure-notice p{margin:6px 0 0;color:var(--muted);line-height:1.7}
+@media(max-width:760px){.discussion-round{margin:26px 0 18px;padding:13px 0}.round-actors{gap:9px}.round-actor{font-size:12px}.round-title strong{font-size:18px}.message.assistant .message-body{font-size:16px}.code-change-dialog{padding:14px}.diff-heading{flex-wrap:wrap}}
+
+/* Task steps stay visible; command/tool details retain their own collapsed cards. */
+.plan-live>.task-flow{border-top:0;border-radius:10px}.plan-live .metro-track{scrollbar-width:thin}.plan-live .flow-heading{line-height:1.6}.plan-live .flow-heading strong{font-weight:600}.plan-live .metro-station small{font-variant-numeric:tabular-nums}.plan-live .flow-note{line-height:1.6}
+
+.followup-thread{margin:18px 0 20px;border-left:3px solid var(--codex);padding-left:16px}.followup-message{background:var(--surface-soft);border:1px solid var(--line);border-radius:10px;padding:13px 15px;margin:10px 0}.followup-heading{display:flex;align-items:center;gap:8px;font-size:13px}.followup-heading .agent-avatar{width:26px;height:26px;flex-basis:26px}.followup-heading small{color:var(--muted);margin-left:auto;font-size:12px}.followup-body{font-size:16px;line-height:1.8}.followup-body p{margin:10px 0 0!important}.followup-reply-label{color:var(--muted);font-size:12px;line-height:1.7;margin-top:13px}@media(max-width:760px){.followup-thread{padding-left:10px}.followup-message{padding:12px}.followup-heading{flex-wrap:wrap}}
+
+.execution-tool-group{border:1px solid var(--line);border-radius:10px;background:var(--surface);font-size:14px;overflow:hidden}.execution-tool-group>summary{display:flex;align-items:center;gap:12px;list-style:none;padding:12px 14px;cursor:pointer;min-height:44px}.execution-tool-group>summary::before{content:'▸';color:var(--muted)}.execution-tool-group[open]>summary::before{content:'▾'}.execution-tool-group summary small{color:var(--muted);font-size:12px;font-weight:400}.tool-group-state{margin-left:auto;white-space:nowrap;color:var(--muted);font-size:12px}.tool-group-items{display:grid;gap:8px;padding:0 12px 12px}.tool-group-items .execution-tool{background:var(--surface-soft)}.internal-only{background:transparent;border-style:dashed;color:var(--muted)}.internal-only>summary{min-height:36px;padding:8px 12px;font-size:12px}.tool-failure-reason,.tool-group-failure{color:var(--accent);font-size:12px}.tool-group-failure{margin:7px 0 0!important;line-height:1.7}.tool-group-problem{padding:0 14px 10px;font-size:13px;color:var(--accent)}
+@media(max-width:760px){.execution-tool-group>summary{flex-wrap:wrap;gap:7px;padding:10px}.tool-group-state{margin-left:16px}.tool-group-items{padding:0 8px 8px}}
+
+/* Grid auto tracks must not use long commands as their minimum width. */
+.legacy-tool-stream,.tool-lines,.tool-group-items{grid-template-columns:minmax(0,1fr);min-width:0;max-width:100%}
+.legacy-tool-stream>*,.tool-lines>*,.tool-group-items>*,.execution-tool{min-width:0;max-width:100%}
+.execution-tool>summary,.execution-tool-detail{min-width:0;max-width:100%}
+.execution-tool pre{min-width:0;max-width:100%;overflow-x:auto}
+.tool-line .tool-call-name{min-width:0;max-width:44%;overflow:hidden;text-overflow:ellipsis}
+
+/* Consecutive tool records stay behind one quiet, opt-in disclosure. */
+#messages .message.assistant .command-batch,
+#messages .message.assistant > .legacy-tool-history.command-batch{margin:0;border:0;border-radius:0;background:transparent;min-width:0;max-width:100%;color:var(--muted)}
+#messages .message.assistant .command-batch>summary,
+#messages .message.assistant > .legacy-tool-history.command-batch>summary{display:flex;align-items:center;flex-wrap:wrap;gap:7px;list-style:none;cursor:pointer;min-height:28px;padding:4px 2px;font-size:13px;line-height:1.6;color:var(--muted)}
+.command-batch>summary::-webkit-details-marker{display:none}.command-batch-icon{display:inline-flex;width:15px;height:15px;align-items:center;flex-shrink:0}.command-batch-label{font-weight:400}.command-batch-arrow{display:inline-block;font-size:17px;line-height:1;transition:transform .15s}.command-batch[open]>summary .command-batch-arrow{transform:rotate(90deg)}.command-batch>summary small{font-size:11px;white-space:nowrap}.command-batch-failed,.command-batch-waiting{color:var(--accent)}.command-batch-running{color:var(--codex)}
+.command-batch-items{margin:6px 0 2px 6px;padding:5px 0 3px 12px;border-left:1px solid var(--line);min-width:0;max-width:100%}.command-batch-items .tool-lines{display:grid;gap:6px}.command-batch .tool-coordination{font-size:12px}.command-batch .tool-coordination>summary{cursor:pointer;color:var(--muted);padding:7px 0}.command-batch .legacy-order-note{margin:0 0 5px;font-size:11px;line-height:1.8}
+@media(max-width:760px){.command-batch-items{padding-left:8px;margin-left:4px}#messages .message.assistant .command-batch>summary{font-size:12px;min-height:32px}}
+@media(prefers-reduced-motion:reduce){.command-batch-arrow{transition:none}}

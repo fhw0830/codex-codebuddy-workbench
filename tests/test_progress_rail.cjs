@@ -1,0 +1,15 @@
+const assert=require('node:assert/strict'),rail=require('../web/progress-rail.js'),ui=require('../web/chat-ui.js'),tools=require('../web/execution-ui.js');
+const old={id:'old',role:'assistant',agent:'codex',status:'completed',meta:{job_id:'old-job',plan:[{step:'旧任务',status:'completed'}]}};
+const m={id:'new',role:'assistant',agent:'codebuddy',created:'2026-10-15T10:00:00+08:00',status:'streaming',meta:{job_id:'new-job',round:2,total_rounds:3,progress:{phase:'tools'},plan:[{step:'读取资料',status:'completed',elapsed_s:65},{step:'检查恢复逻辑',status:'in_progress',started_at:'2026-10-15T10:00:00+08:00',timing_live:true}],tool_events:[{id:'read',name:'Read',status:'running',path:'recovery.py',plan_step:'检查恢复逻辑'}]}};
+const c={job:{id:'new-job',status:'running'},messages:[old,m]};
+assert.equal(rail.select(c),m);let html=rail.html(c,ui,tools);
+assert.match(html,/第 2 \/ 3 轮/);assert.match(html,/recovery.py/);assert.match(html,/1 分 5 秒/);assert.match(html,/data-live-duration/);assert.match(html,/aria-current="step"/);assert.doesNotMatch(html,/旧任务/);
+assert.deepEqual(rail.target(m,'检查恢复逻辑'),{message_id:'new',tool_id:'read',step:'检查恢复逻辑'});
+assert.deepEqual(rail.stepFiles({step:'读取 recovery.py'},[]),['recovery.py']);
+assert.deepEqual(rail.stepFiles({step:'未知'},m.meta.tool_events),[],'never attach unrelated files to a step');
+c.job={id:'queued-job',status:'queued'};html=rail.html(c,ui,tools);assert.match(html,/等待后台开始/);assert.doesNotMatch(html,/旧任务|recovery.py|检查恢复逻辑/);
+c.job={id:'new-job',status:'waiting_input'};assert.match(rail.html(c,ui,tools),/等待你回答/);
+c.job.status='running';m.status='completed';assert.match(rail.html(c,ui,tools),/本轮回复完成/);assert.match(rail.html(c,ui,tools),/结束时进行中/);assert.doesNotMatch(rail.html(c,ui,tools),/data-live-duration/);
+m.meta.plan[1].step='<script>';assert.match(rail.html(c,ui,tools),/&lt;script&gt;/);assert.doesNotMatch(rail.html(c,ui,tools),/<script>/);
+assert.equal(rail.html({messages:[]},ui,tools),'');
+console.log('Progress rail: task isolation, actual plan/tool association, safe history, live/frozen timing, waiting, escaping and navigation targets passed');

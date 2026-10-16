@@ -1,0 +1,23 @@
+const assert=require('node:assert/strict'),ui=require('../web/execution-ui.js'),questions=require('../web/user-input-ui.js');
+const patch={path:'demo.py',diff:'--- a/demo.py\n+++ b/demo.py\n@@ -10,2 +10,2 @@\n-value = 1\n+value = 2\n keep',scope:'snippet'};
+assert.deepEqual(ui.counts(patch),{added:1,removed:1});
+const tool={id:'edit',name:'Edit',status:'completed',changes:[patch]};
+const message={content:'最终结论',meta:{activity:[{id:'a',type:'text',text:'检查文件'},{id:'b',type:'tool',tool},{id:'q',type:'question',question_id:'question'},{id:'c',type:'text',text:'修改完成'}]}};
+const html=ui.html(message,x=>x,id=>'QUESTION:'+id,()=> '1 秒');
+assert.ok(html.indexOf('检查文件')<html.indexOf('Edit'));assert.ok(html.indexOf('Edit')<html.indexOf('QUESTION:question'));assert.ok(html.indexOf('QUESTION:question')<html.indexOf('修改完成'));
+assert.match(html,/diff-add/);assert.match(html,/diff-remove/);assert.match(html,/行号相对片段/);assert.doesNotMatch(html,/<details[^>]+\sopen/);
+assert.match(ui.toolHTML({id:'x',name:'<script>',status:'failed',changes:[{path:'<img>',preview:'<script>',scope:'submitted'}]}),/&lt;script&gt;/);
+const request={id:'question',message_id:'model',state:'answered',questions:[{id:'choice',question:'允许修改吗？'}],answers:{choice:['只讨论 <script>']},user_message_id:'answer'};
+const model={id:'model',role:'assistant',agent:'codex',content:'请确认。'},answer={id:'answer',role:'user',meta:{answer_to:'question',delivery:{state:'accepted'}},content:'用户真实答案'};
+const cards=questions.html(model,[request],{},[model,answer]);assert.match(cards,/你的回答/);assert.match(cards,/只讨论 &lt;script&gt;/);assert.match(cards,/允许修改吗/);
+assert.equal(questions.inlineAnswerIds([model,answer],[request]).has('answer'),true);
+assert.equal(questions.inlineAnswerIds([answer],[request]).has('answer'),false,'never hide an orphaned answer');
+console.log('Execution UI: ordered text/tools/questions, line diff, collapsed tools, escaped code and inline human answers passed');
+
+const fs=require('node:fs'),vm=require('node:vm');
+const source=fs.readFileSync(require.resolve('../web/app.js'),'utf8');
+const legacy=source.slice(source.indexOf('function toolTraceHTML('),source.indexOf("$('access-mode').onchange",source.indexOf('function toolTraceHTML(')));
+const scope={CollabExecution:ui,CollabChatUI:{measuredTime:()=>''}};vm.runInNewContext(legacy,scope);
+const oldTools=scope.toolTraceHTML({meta:{tool_events:[{id:'old',name:'Read',status:'completed'}]}});
+assert.match(oldTools,/legacy-tool-history/);assert.doesNotMatch(oldTools,/<details[^>]+\sopen/);
+assert.equal(scope.toolTraceHTML({meta:{activity:[{}],tool_events:[{}]}}),'','new timelines must keep interleaving tools');

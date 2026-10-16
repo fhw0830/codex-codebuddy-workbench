@@ -1,0 +1,12 @@
+const assert=require('node:assert/strict'),ui=require('../web/execution-ui.js');
+const event=(id,name='Bash',status='completed')=>({id,type:'tool',tool:{id,name,status,command:name==='Bash'?'echo safe':undefined,output:'<safe output>'}});
+const events=[event('a','Grep'),event('b'),event('c','Read'),event('d','Glob')];
+const group=ui.groupHTML(events,()=> '5 秒');
+assert.match(group,/运行了 4 个命令/);assert.match(group,/data-tool-id="batch-a"/);assert.doesNotMatch(group,/<details[^>]*\sopen(?:\s|>)/);assert.equal((group.match(/class="execution-tool tool-line/g)||[]).length,4);assert.match(group,/&lt;safe output&gt;/);
+const later=ui.groupHTML([...events,event('e')],()=> '5 秒');assert.match(later,/运行了 5 个命令/);assert.match(later,/data-tool-id="batch-a"/,'stream append must retain the same details key');
+const live=ui.groupHTML([event('a','Bash','running'),event('b','Read','failed'),event('c','Read','waiting_input')]);assert.match(live,/正在运行 3 个命令/);assert.match(live,/1 项执行中/);assert.match(live,/1 项失败/);assert.match(live,/1 项等待回答/);assert.doesNotMatch(live,/<details[^>]*\sopen(?:\s|>)/);
+const timeline={status:'completed',content:'answer',meta:{activity:[{id:'intro',type:'text',text:'先检查'},...events,{id:'progress',type:'text',text:'检查后继续'},event('f'),{id:'q',type:'question',question_id:'pending'},{id:'final',type:'text',text:'最终答复',phase:'final_answer'}]}};
+const html=ui.html(timeline,x=>x,id=>'<form>'+id+'</form>');assert.equal((html.match(/class="command-batch"/g)||[]).length,2,'public progress must split batches');assert.ok(html.indexOf('运行了 4 个命令')<html.indexOf('检查后继续'));assert.ok(html.indexOf('检查后继续')<html.indexOf('运行了 1 个命令'));assert.ok(html.indexOf('</details>',html.indexOf('运行了 1 个命令'))<html.indexOf('<form>pending</form>'));assert.ok(html.indexOf('<form>pending</form>')<html.indexOf('最终答复'));
+const internal=ui.groupHTML([event('plan','report_task_plan'),event('coord','coordinate_resources')]);assert.doesNotMatch(internal,/运行了/);assert.match(internal,/步骤与协调/);
+assert.match(ui.batchSummary([event('cancel','Bash','cancelled').tool]),/1 项已取消/);
+console.log('Command batches: opt-in collapse, stable append keys, exact saved counts, public progress/question boundaries, visible failure/wait/run states and escaped details passed');

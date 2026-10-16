@@ -1,0 +1,12 @@
+const assert=require('node:assert/strict');
+const {applyDelta,mergeMessages}=require('../web/stream-state.js');
+const message={id:'a',conversation_id:'room1',content:'中文🙂',status:'streaming'};
+const event={id:'a',conversation_id:'room1',base_length:4,delta:'新段落'};
+assert.deepEqual(applyDelta(message,event),{kind:'update',content:'中文🙂新段落'});
+assert.equal(applyDelta({...message,content:'中文🙂新段落'},event).kind,'ignore');
+assert.equal(applyDelta(message,{...event,conversation_id:'room2'}).kind,'ignore');
+assert.equal(applyDelta(message,{...event,base_length:8}).kind,'reload');
+assert.equal(applyDelta({...message,status:'completed'},event).kind,'ignore');
+assert.equal(mergeMessages([message],[{...message,content:'中'}])[0].content,message.content);
+assert.equal(mergeMessages([message],[{...message,status:'completed',content:'最终重排文本'}])[0].content,'最终重排文本');
+console.log('7 stream replay/order/isolation checks passed');

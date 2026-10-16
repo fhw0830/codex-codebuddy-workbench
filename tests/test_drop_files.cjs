@@ -1,0 +1,14 @@
+const assert=require('node:assert/strict');
+const {controller}=require('../web/drop-files.js');
+const highlighted=[],calls=[];let prevented=0;
+const drop=controller(files=>calls.push(files),v=>highlighted.push(v));
+const event={dataTransfer:{types:['Files'],files:[{name:'document.docx'},{name:'photo.png'}]},preventDefault(){prevented++;}};
+drop.dragenter(event);drop.dragenter(event);drop.dragleave();
+assert.equal(highlighted.at(-1),true);
+drop.dragleave();assert.equal(highlighted.at(-1),false);
+drop.dragover(event);assert.equal(event.dataTransfer.dropEffect,'copy');
+drop.drop(event);assert.deepEqual(calls[0].map(f=>f.name),['document.docx','photo.png']);
+assert.equal(highlighted.at(-1),false);assert.equal(prevented,4);
+drop.drop({dataTransfer:{files:[]},preventDefault(){throw Error('unnecessary');}});assert.equal(calls.length,1);
+drop.dragenter({dataTransfer:{types:['text/plain']},preventDefault(){throw Error('text drag');}});assert.equal(highlighted.length,4);
+console.log('8 drag/drop lifecycle and file-forwarding checks passed');

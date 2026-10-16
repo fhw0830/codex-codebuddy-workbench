@@ -1,0 +1,214 @@
+/* Refined chat: presentation only, deliberately scoped to assistant messages.
+   Keep navigation, model settings, composer, round groups and progress unchanged. */
+#messages .message.assistant {
+  min-width: 0;
+  padding: 20px 22px 16px;
+  margin-bottom: 24px !important;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--surface);
+}
+#messages .message.assistant > .message-heading {
+  margin-bottom: 14px;
+  gap: 8px;
+}
+#messages .message.assistant > .message-heading strong {
+  font-size: 14px;
+  font-weight: 550;
+}
+#messages .message.assistant > .message-heading .model-tag,
+#messages .message.assistant > .message-heading time {
+  font-size: 11px;
+}
+#messages .message.assistant > .message-heading .message-round-badge {
+  font-size: 11px;
+  padding: 2px 6px;
+  background: var(--surface-soft);
+}
+#messages .message.assistant > .message-heading .agent-avatar {
+  width: 29px;
+  height: 29px;
+  flex-basis: 29px;
+  border-radius: 9px;
+  box-shadow: none;
+}
+#messages .message.assistant > .message-body {
+  max-width: none;
+  padding-left: 0;
+  margin-left: 0;
+  line-height: 1.85;
+}
+#messages .message.assistant > .message-body > :first-child,
+#messages .message.assistant .execution-text > :first-child {
+  margin-top: 0;
+}
+#messages .message.assistant > .message-footer {
+  margin: 14px 0 0;
+  font-size: 12px;
+  gap: 9px;
+}
+#messages .message.assistant > .message-plan,
+#messages .message.assistant > .task-flow.compact,
+#messages .message.assistant > .tool-trace,
+#messages .message.assistant > .wb-handoff,
+#messages .message.assistant > .wb-inspectors,
+#messages .message.assistant > .resource-wait {
+  margin-left: 0;
+}
+#messages .message.assistant > .message-plan {
+  margin-bottom: 14px;
+}
+#messages .message.assistant > .wb-inspectors {
+  margin-top: 7px;
+  margin-bottom: 0;
+}
+#messages .message.assistant > .wb-handoff {
+  margin-top: 15px;
+  padding-left: 11px;
+}
+#messages .message.assistant .execution-tool,
+#messages .message.assistant .execution-tool-group,
+#messages .message.assistant > .tool-trace {
+  border-radius: 9px;
+  background: var(--surface);
+}
+#messages .message.assistant .execution-tool > summary,
+#messages .message.assistant .execution-tool-group > summary,
+#messages .message.assistant > .tool-trace > summary {
+  padding: 10px 12px;
+  min-height: 40px;
+  font-size: 13px;
+}
+#messages .message.assistant .tool-call-name {
+  font-weight: 500;
+}
+#messages .message.assistant .tool-group-items .execution-tool {
+  background: var(--surface-soft);
+}
+#messages .message.assistant .question-card {
+  margin: 17px 0 0;
+  padding: 17px 18px;
+  border: 0;
+  border-radius: 15px;
+  background: var(--surface-soft);
+}
+#messages .message.assistant .question-heading {
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+#messages .message.assistant .question-heading strong {
+  color: var(--codex);
+  font-size: 13px;
+  font-weight: 500;
+}
+#messages .message.assistant .question-heading small {
+  font-size: 11px;
+}
+#messages .message.assistant .question-card fieldset {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+#messages .message.assistant .question-card legend {
+  margin-bottom: 11px;
+  font-weight: 500;
+  line-height: 1.8;
+}
+#messages .message.assistant .question-option {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  gap: 7px;
+  margin: 0;
+  padding: 8px 11px;
+  border-radius: 8px;
+  background: var(--surface);
+  overflow-wrap: anywhere;
+}
+#messages .message.assistant .question-option input {
+  flex: 0 0 auto;
+  margin-top: 5px;
+  accent-color: var(--codex);
+}
+#messages .message.assistant .question-option:has(input:checked) {
+  border-color: var(--codex);
+  background: color-mix(in srgb, var(--codex) 10%, var(--surface));
+}
+#messages .message.assistant .question-option:focus-within {
+  outline: 2px solid var(--codex);
+  outline-offset: 2px;
+}
+#messages .message.assistant .question-option strong {
+  font-size: 14px;
+  font-weight: 400;
+}
+#messages .message.assistant .question-option small {
+  margin-top: 3px;
+  font-size: 12px;
+}
+#messages .message.assistant .question-card textarea {
+  flex-basis: 100%;
+  min-width: 0;
+  margin-top: 4px;
+  background: var(--surface);
+  border-radius: 8px;
+}
+#messages .message.assistant .question-actions {
+  gap: 12px;
+  flex-wrap: wrap;
+}
+#messages .message.assistant .question-actions small {
+  font-size: 12px;
+}
+#messages .message.assistant .question-actions button {
+  color: var(--codex);
+  border-color: var(--codex);
+  background: var(--surface);
+  border-radius: 7px;
+}
+#messages .message.assistant .question-answer {
+  margin: 14px 0 0;
+  padding: 13px 0 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  background: transparent;
+}
+#messages .message.assistant .answer-heading {
+  margin-bottom: 9px;
+  font-size: 12px;
+  flex-wrap: wrap;
+}
+#messages .message.assistant .answer-avatar {
+  width: 23px;
+  height: 23px;
+  font-size: 11px;
+  color: var(--codex);
+}
+#messages .message.assistant .question-receipt {
+  margin-bottom: 0;
+  font-size: 12px;
+}
+@media (max-width: 760px) {
+  #messages .message.assistant {
+    padding: 16px 14px 13px;
+    border-radius: 15px;
+    margin-bottom: 20px !important;
+  }
+  #messages .message.assistant .question-card {
+    padding: 14px 12px;
+    border-radius: 12px;
+  }
+  #messages .message.assistant .question-option {
+    padding: 8px 10px;
+  }
+  #messages .message.assistant .question-card textarea {
+    font-size: 16px;
+  }
+  #messages .message.assistant .execution-tool > summary,
+  #messages .message.assistant .execution-tool-group > summary {
+    padding: 9px 10px;
+  }
+}

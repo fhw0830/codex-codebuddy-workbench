@@ -1,0 +1,12 @@
+const assert=require('node:assert/strict'),ui=require('../web/followup-ui.js'),execution=require('../web/execution-ui.js');
+const a={id:'a',role:'assistant',agent:'codex',status:'completed',meta:{job_id:'job',round:1}},other={id:'other',role:'assistant',agent:'codebuddy',meta:{job_id:'other'}};
+const supplement={id:'u',role:'user',content:'为什么未满水能出发？',meta:{job_id:'job',delivery:{mode:'steer',state:'accepted',agent:'codex'}}};
+const messages=[a,other,supplement];assert.equal(ui.target(messages,supplement).id,'a');assert.ok(ui.inlineIds(messages).has('u'));
+assert.equal(ui.target([other,supplement],supplement),null,'orphan supplements stay visible');
+assert.equal(ui.target(messages,{...supplement,meta:{...supplement.meta,delivery:{mode:'steer',state:'failed'}}}),null);
+const explicit={...supplement,meta:{...supplement.meta,in_reply_to:'a'}};assert.equal(ui.target([a,other,explicit],explicit).id,'a');
+const body=ui.html(messages,a,x=>x,()=>'<avatar>');assert.match(body,/你的中途补充/);assert.match(body,/为什么未满水能出发/);
+const m={...a,meta:{...a.meta,activity:[{id:'progress',type:'text',text:'先检查'},{id:'read',type:'tool',tool:{id:'read',name:'Read'}},{id:'final',type:'text',text:'因为开关未启用。',phase:'final_answer'}]}};
+const html=execution.html(m,x=>x,()=>'',()=>'',body);assert.ok(html.indexOf('先检查')<html.indexOf('为什么未满水'));assert.ok(html.indexOf('为什么未满水')<html.indexOf('因为开关未启用'));
+assert.match(execution.html({...a,content:'历史整轮回答'},x=>x,()=>'',()=>'',body),/为什么未满水[\s\S]*历史整轮回答/);
+console.log('Followup UI: same-task actor binding, exact target, orphan visibility and supplement-before-reply alignment passed');

@@ -1,0 +1,20 @@
+const assert=require('node:assert/strict'),ui=require('../web/discussion-ui.js');
+const root={id:'user',role:'user',meta:{job_id:'job',route:'both',rounds:2,execution_strategy:'discuss_first'}};
+const a={id:'a',role:'assistant',agent:'codex',status:'completed',meta:{job_id:'job',round:1}},b={id:'b',role:'assistant',agent:'codebuddy',status:'completed',meta:{job_id:'job',round:1}};
+const a2={id:'a2',role:'assistant',agent:'codex',status:'completed',meta:{job_id:'job',round:2}},b2={id:'b2',role:'assistant',agent:'codebuddy',status:'failed',meta:{job_id:'job',round:2}};
+const c={messages:[root,a,b,a2,b2]};
+const html=ui.render(c,c.messages,m=>'<article>'+m.id+'</article>');
+assert.equal((html.match(/data-round-key=/g)||[]).length,2);
+assert.match(html,/第 1 轮<span> \/ 共 2 轮/);assert.match(html,/第 2 轮/);assert.match(html,/双方讨论方案/);assert.match(html,/执行方案与复核/);assert.match(html,/本次失败/);
+assert.ok(html.indexOf('data-round-key="job:2"')>html.indexOf('<article>b</article>'));
+c.input_requests=[{message_id:'a2',state:'pending',blocking:true}];assert.equal(ui.actorState(c,'job',2,'codex').label,'等你回答');
+const answer={id:'answer',role:'user',meta:{delivery:{mode:'answer'}}},resume={...a2,id:'resume'};
+assert.equal((ui.render(c,[root,a2,answer,resume],m=>m.id).match(/data-round-key=/g)||[]).length,1,'same round resume is not a new round');
+const single={messages:[{...root,meta:{job_id:'job',route:'codebuddy',rounds:1}},b]};assert.doesNotMatch(ui.heading(single,b),/Codex/);
+const history={messages:[a]};assert.doesNotMatch(ui.heading(history,a),/共 \d+ 轮/,'unknown historical total is not invented');
+console.log('Discussion UI: correct task rounds, actor states, waiting, same-round resume, single actor and honest history passed');
+
+assert.equal(ui.context({messages:[{...root,meta:{job_id:'job',route:'codex',rounds:3}}]},a).total,1);
+assert.match(ui.heading({...c,messages:[root,{...a2,meta:{...a2.meta,access_mode:'discussion'}}]},{...a2,meta:{...a2.meta,access_mode:'discussion'}}),/继续讨论与复核/);
+const resumedRoom={job:{id:'resume',route:'both',rounds:1},messages:[{id:'original-result',role:'assistant',agent:'codex',status:'completed',meta:{job_id:'original',round:1}},{id:'resume-user',role:'user',meta:{job_id:'resume',route:'both',rounds:1,resume_checkpoint:{agent:'codebuddy',round:1,source_job_id:'original'}}}]};
+assert.equal(ui.actorState(resumedRoom,'resume',1,'codex').label,'上次已完成');

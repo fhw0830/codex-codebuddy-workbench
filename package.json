@@ -1,0 +1,14 @@
+{
+  "name": "codex-codebuddy-workbench",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "description": "CodeDuo: a local Codex and CodeBuddy collaboration workbench",
+  "scripts": {
+    "test": "python scripts/run_js_tests.py"
+  },
+  "devDependencies": {
+    "markdown-it": "14.1.0",
+    "@phosphor-icons/core": "2.1.1"
+  }
+}

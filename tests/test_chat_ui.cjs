@@ -1,0 +1,46 @@
+const assert=require('node:assert/strict');
+const ui=require('../web/chat-ui.js');
+for(const name of ['user','codex','codebuddy']){assert.ok(ui.avatar(name).includes('头像'));}
+assert.notEqual(ui.avatar('codex'),ui.avatar('codebuddy'));
+assert.ok(ui.delivery({meta:{job_id:'safe',delivery:{mode:'queue',state:'queued'}}}).includes('取消排队'));
+assert.ok(ui.delivery({meta:{delivery:{state:'accepted'}}}).includes('已补充当前任务'));
+const message={agent:'codex',status:'streaming',meta:{round:1,plan:[{step:'读取 recovery.py <script>',status:'completed'},{step:'修改恢复状态机',status:'in_progress'},{step:'跑回归用例',status:'pending'}],progress:{phase:'tools'},tool_events:[{name:'Read',status:'running',file_path:'recovery.py'}]}};
+const flow=ui.flow(message);
+assert.ok(flow.includes('metro-station in_progress'));assert.ok(flow.includes('&lt;script&gt;'));assert.ok(!flow.includes('<script>'));
+message.status='completed';assert.ok(ui.flow(message).includes('metro-station pending'));
+assert.equal(ui.duration(65),'1 分 5 秒');assert.equal(ui.duration(3661),'61 分 1 秒');
+assert.ok(ui.questionTiming({meta:{timing:{elapsed_s:65,wait_s:10,finished_at:'done',status:'completed'}}}).includes('处理耗时 · 1 分 5 秒'));
+assert.ok(ui.questionTiming({meta:{timing:{elapsed_s:65,wait_s:10,finished_at:'done',status:'failed'}}}).includes('失败前处理'));
+assert.ok(ui.questionTiming({meta:{timing:{started_at:'2026-10-14T12:00:00+08:00',wait_s:10}}}).includes('data-live-duration'));
+assert.equal(ui.questionTiming({meta:{}}),'');
+assert.ok(!ui.questionTiming({meta:{timing:{started_at:'2026-10-14T12:00:00+08:00',status:'interrupted'}}}).includes('data-live-duration'));
+assert.equal(ui.stepTime({status:'pending'},message),'');
+assert.ok(ui.stepTime({status:'completed'},message).includes('未记录用时'));
+assert.ok(!ui.stepTime({status:'in_progress',timing_live:true,elapsed_s:10,started_at:'2026-10-14T12:00:00+08:00'},message).includes('data-live-duration'));
+console.log('Chat UI: avatars, receipts, actual plans and safe rendering passed');
+
+assert.equal(ui.duration(184.3),'3 分 4 秒');
+assert.ok(!ui.planDisclosure(message).includes(' open'));
+assert.ok(ui.planDisclosure(message).includes('plan-history'));
+assert.ok(ui.planDisclosure(message).includes('<details'));
+assert.ok(ui.planDisclosure(message).includes('回答已完成'));
+message.status='streaming';message.meta.plan[1].timing_live=true;message.meta.plan[1].started_at='2026-10-15T09:00:00+08:00';
+assert.ok(ui.planDisclosure(message).includes('data-live-duration'));
+message.meta.plan[1].status='completed';message.meta.plan[2].status='in_progress';
+const advanced=ui.planDisclosure(message);assert.match(advanced,/2 \/ 3 步/);assert.match(advanced,/metro-station in_progress[^>]*.*跑回归用例/);
+message.status='completed';
+assert.ok(ui.flow(message).includes('结束时进行中'));
+
+assert.ok(ui.resourceWait({meta:{resource_wait:{state:'waiting',resources:['robot:test-robot','code:C:/project/.git']}}}).includes('另一对话正在操作'));
+const queued=ui.delivery({id:'message-safe',meta:{job_id:'safe',delivery:{mode:'queue',state:'queued'}}},true);
+assert.ok(queued.includes('引导当前任务')&&queued.includes('编辑')&&queued.includes('删除'));
+assert.ok(!queued.includes('data-cancel-queue'));
+const liveReply={status:'streaming',created:'2026-10-14T12:00:00+08:00',meta:{}};
+assert.ok(ui.replyTiming(liveReply).includes('data-live-duration'));
+assert.ok(ui.replyTiming({status:'completed',meta:{elapsed_s:184}}).includes('3 分 4 秒'));
+const clock={job:{id:'current',status:'running'},messages:[{role:'user',meta:{job_id:'other',timing:{started_at:'wrong'}}},{role:'user',created:'2026-10-14T12:00:00+08:00',meta:{job_id:'current',timing:{started_at:'2026-10-14T12:00:00+08:00',accumulated_s:65}}}]};
+assert.ok(ui.activeTiming(clock).includes('data-accumulated="65"'));
+assert.ok(!ui.activeTiming(clock).includes('wrong'));
+clock.job.status='waiting_input';clock.messages[1].meta.timing.elapsed_s=184;
+assert.ok(ui.activeTiming(clock).includes('3 分 4 秒'));
+assert.ok(!ui.activeTiming(clock).includes('data-live-duration'));

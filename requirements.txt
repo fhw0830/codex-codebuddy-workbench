@@ -1,0 +1,2 @@
+# Python 3.12+ standard library; no required pip packages.
+# Optional document extraction: requirements-optional.txt
